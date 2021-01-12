@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "80766181381",
+    "project_id": "quotes-club-96266",
+    "storage_bucket": "quotes-club-96266.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:80766181381:android:f985ae854a0a873d63fc6c",
+        "android_client_info": {
+          "package_name": "com.hassan.quotes_club"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "80766181381-tpoaqm8dihqej4veoijikfknirptcojt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hassan.quotes_club",
+            "certificate_hash": "e6d42e789de10a8f2ae837f9e90fe83ec2977e79"
+          }
+        },
+        {
+          "client_id": "80766181381-qaemhju6s7cudlj9gr2vdqlin1n795k9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDykQPzHv2HmEXNDI6tjHiAAhmyJb6UxdI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "80766181381-qaemhju6s7cudlj9gr2vdqlin1n795k9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
