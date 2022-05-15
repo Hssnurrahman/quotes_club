@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:quotes_app/widgets/app_bar.dart';
-import 'package:quotes_app/widgets/divider.dart';
-import 'package:quotes_app/widgets/list_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FeedbackScreen extends StatelessWidget {
@@ -10,15 +8,15 @@ class FeedbackScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget buildListTile(
-      String link,
+      Uri link,
       IconData iconData,
       String titleText,
     ) {
       return ListTile(
         onTap: () async {
           var url = link;
-          if (await canLaunch(url)) {
-            await launch(
+          if (await canLaunchUrl(url)) {
+            await launchUrl(
               url,
             );
           } else {
@@ -42,13 +40,10 @@ class FeedbackScreen extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: Colors.grey[300],
       appBar: QuotesAppBar().appBar(
         "Feedback",
         true,
-        FlatButton(
-          onPressed: null,
-          child: null,
-        ),
       ),
       body: Container(
         padding: EdgeInsets.all(
@@ -59,19 +54,19 @@ class FeedbackScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             buildListTile(
-              "https://forms.gle/8qGZVYV8i81NRc2p6",
+              Uri.parse("https://forms.gle/8qGZVYV8i81NRc2p6"),
               Icons.feedback,
               "Give Feedback",
             ),
             Divider(),
             buildListTile(
-              "https://forms.gle/toJq5znnz4HxBCDMA",
+              Uri.parse("https://forms.gle/toJq5znnz4HxBCDMA"),
               Icons.report,
               "Report A Bug",
             ),
             Divider(),
             buildListTile(
-              "mailto:hssnurrahman@gmail.com",
+              Uri.parse("mailto:hssnurrahman@gmail.com"),
               Icons.contact_mail,
               "Contact Us",
             ),

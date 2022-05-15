@@ -1,14 +1,10 @@
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:quotes_app/screens/tabs_screen.dart';
 import 'package:quotes_app/widgets/app_bar.dart';
 import 'package:quotes_app/widgets/sized_box.dart';
-
 
 class AddQuote extends StatefulWidget {
   static const routeName = "/add-quote";
@@ -18,9 +14,6 @@ class AddQuote extends StatefulWidget {
 }
 
 class _AddQuoteState extends State<AddQuote> {
-
-
-
   var _quote = "";
   var _authorName = "";
 
@@ -31,17 +24,14 @@ class _AddQuoteState extends State<AddQuote> {
     "Nature",
     "Special Days",
     "Islamic",
-    "Urdu",
     "Others",
   ];
-  String _selectedCategory;
+  String? _selectedCategory = "Life";
 
   List<String> _languages = [
     "English",
     "Urdu",
-    "Hindi",
     "Arabic",
-    "Chinese",
   ];
   String _selectedLanguage = "English";
 
@@ -56,7 +46,6 @@ class _AddQuoteState extends State<AddQuote> {
       appBar: QuotesAppBar().appBar(
         "Add Quote",
         false,
-        FlatButton(onPressed: null, child: null),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -95,7 +84,7 @@ class _AddQuoteState extends State<AddQuote> {
                     ),
                   ),
                   onSaved: (quote) {
-                    _quote = quote;
+                    _quote = quote!;
                   },
                 ),
                 QuoteSizedBox().addQuoteSizedBox(
@@ -115,6 +104,8 @@ class _AddQuoteState extends State<AddQuote> {
                   cursorColor: Colors.blue[100],
                   keyboardType: TextInputType.text,
                   textCapitalization: TextCapitalization.words,
+                  maxLength: 20,
+
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.grey[700],
@@ -126,7 +117,7 @@ class _AddQuoteState extends State<AddQuote> {
                     ),
                   ),
                   onSaved: (authorName) {
-                    _authorName = authorName;
+                    _authorName = authorName!;
                   },
                 ),
                 QuoteSizedBox().addQuoteSizedBox(
@@ -157,7 +148,7 @@ class _AddQuoteState extends State<AddQuote> {
                       value: _selectedCategory,
                       onChanged: (newValue) {
                         setState(() {
-                          _selectedCategory = newValue;
+                          _selectedCategory = newValue as String?;
                         });
                       },
                       items: _categories.map((location) {
@@ -204,7 +195,7 @@ class _AddQuoteState extends State<AddQuote> {
                       value: _selectedLanguage,
                       onChanged: (newValue) {
                         setState(() {
-                          _selectedLanguage = newValue;
+                          _selectedLanguage = (newValue as String?)!;
                         });
                       },
                       items: _languages.map((language) {
@@ -229,14 +220,22 @@ class _AddQuoteState extends State<AddQuote> {
                 if (_isAdding) CircularProgressIndicator(),
                 if (!_isAdding)
                   Container(
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          10,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              10,
+                            ),
+                          ),
+                        ),
+                        elevation: MaterialStateProperty.all(
+                          5,
+                        ),
+                        backgroundColor: MaterialStateProperty.all(
+                          Colors.teal,
                         ),
                       ),
-                      elevation: 5,
-                      color: Colors.teal,
                       child: Text(
                         "Submit",
                         style: TextStyle(
@@ -254,7 +253,7 @@ class _AddQuoteState extends State<AddQuote> {
                           "Selected Language: $_selectedLanguage",
                         );
 
-                        _addQuoteFormKey.currentState.save();
+                        _addQuoteFormKey.currentState?.save();
 
                         setState(() {
                           _isAdding = true;
@@ -288,7 +287,7 @@ class _AddQuoteState extends State<AddQuote> {
 
                         final userData = await FirebaseFirestore.instance
                             .collection("users")
-                            .doc(user.uid)
+                            .doc(user?.uid)
                             .get();
 
                         await FirebaseFirestore.instance
@@ -300,7 +299,7 @@ class _AddQuoteState extends State<AddQuote> {
                                 ? "Unknown"
                                 : _authorName,
                             "creatorName": userData["userName"],
-                            "creatorId": user.uid,
+                            "creatorId": user?.uid,
                             "createdAt": Timestamp.now(),
                             "category": _selectedCategory,
                             "language": _selectedLanguage,
@@ -313,8 +312,10 @@ class _AddQuoteState extends State<AddQuote> {
                           "Quote Added!",
                         );
 
-                        Navigator.of(context).pushReplacementNamed(
-                          TabsScreen.routeName,
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => TabsScreen(),
+                          ),
                         );
 
                         setState(() {

@@ -1,7 +1,5 @@
-import 'package:firebase_admob/firebase_admob.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:quotes_app/models/quote_card.dart';
+import 'package:quotes_app/screens/quotes_screen.dart';
 
 import 'package:quotes_app/widgets/app_bar.dart';
 
@@ -12,15 +10,13 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[300],
       appBar: QuotesAppBar().appBar(
         "Quotes Club",
         false,
-        FlatButton(onPressed: null, child: null),
       ),
       body: Container(
         padding: EdgeInsets.only(
@@ -30,7 +26,7 @@ class _MainScreenState extends State<MainScreen> {
           right: 10,
         ),
         child: SingleChildScrollView(
-          child: QuoteCard(),
+          child: QuotesScreen(),
         ),
       ),
     );

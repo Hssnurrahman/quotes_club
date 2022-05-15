@@ -1,23 +1,111 @@
 import 'dart:ui' as ui;
 
 import 'package:clipboard/clipboard.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:quotes_app/screens/creator_quotes_screen.dart';
 import 'package:quotes_app/widgets/divider.dart';
 import 'package:quotes_app/widgets/sized_box.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:translator/translator.dart';
 
-class QuotesCard {
-  Card quoteCard(
-    BuildContext context,
-    List<DocumentSnapshot> quotes,
-    int index,
-    dynamic createdDate,
-    String language,
-  ) {
+class QuotesCard extends StatefulWidget {
+  final String? quote;
+
+  final String? creatorName;
+
+  final String? authorName;
+
+  final String? language;
+
+  final dynamic createdDate;
+
+  QuotesCard({
+    Key? key,
+    this.quote,
+    this.creatorName,
+    this.authorName,
+    this.language,
+    this.createdDate,
+  }) : super(key: key);
+
+  @override
+  State<QuotesCard> createState() => _QuotesCardState();
+}
+
+class _QuotesCardState extends State<QuotesCard> {
+  @override
+  Widget build(BuildContext context) {
+    Future<void> _showMyDialog(translation) async {
+      return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              'Translation',
+              style: TextStyle(
+                fontFamily: "Sansita Swashed Regular",
+                fontSize: 20,
+              ),
+            ),
+            content: Text(
+              '$translation',
+              style: TextStyle(
+                fontFamily: "Ubuntu",
+                fontSize: 17,
+              ),
+              textDirection:
+                  widget.language == "Urdu" || widget.language == "Arabic"
+                      ? ui.TextDirection.ltr
+                      : ui.TextDirection.rtl,
+              textAlign: TextAlign.center,
+            ),
+            backgroundColor: Colors.grey[300],
+            actions: <Widget>[
+              // TextButton(
+              //   style: ButtonStyle(
+              //       foregroundColor: MaterialStateProperty.all(
+              //     Colors.teal,
+              //   )),
+              //   child: const Text(
+              //     'Copy',
+              //   ),
+              //   onPressed: () {
+              //     print("Quote Copies");
+              //     FlutterClipboard.copy(
+              //       translation as Translation,
+              //     );
+
+              //     Navigator.of(context).pop();
+              //     showToast(
+              //       "Quote Copied!",
+              //     );
+              //   },
+              // ),
+              TextButton(
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all(
+                    Colors.teal,
+                  ),
+                ),
+                child: const Text(
+                  'Close',
+                  style: TextStyle(
+                    fontFamily: "A Anti Corona",
+                    fontSize: 15,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(
@@ -40,12 +128,16 @@ class QuotesCard {
           children: [
             InkWell(
               onTap: () {
-                print(
-                  quotes[index].data()["creatorName"],
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => CreatorQuotesScreen(
+                      creatorName: widget.creatorName,
+                    ),
+                  ),
                 );
               },
               child: Text(
-                quotes[index].data()["creatorName"],
+                widget.creatorName!,
                 style: TextStyle(
                   fontFamily: "A Anti Corona",
                   fontSize: 14,
@@ -62,17 +154,18 @@ class QuotesCard {
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: Text(
-                  quotes[index].data()["quote"],
+                  widget.quote!,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: "Ubuntu",
-                    fontSize: 18,
+                    fontSize: 17,
                     color: Colors.white,
                     // fontWeight: FontWeight.bold,
                   ),
-                  textDirection: language == "Urdu" || language == "Arabic"
-                      ? ui.TextDirection.rtl
-                      : ui.TextDirection.ltr,
+                  textDirection:
+                      widget.language == "Urdu" || widget.language == "Arabic"
+                          ? ui.TextDirection.rtl
+                          : ui.TextDirection.ltr,
                 ),
               ),
             ),
@@ -84,7 +177,7 @@ class QuotesCard {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Author: ${quotes[index].data()["authorName"]}",
+                  "Author: ${widget.authorName!}",
                   style: TextStyle(
                     fontFamily: "A Anti Corona",
                     fontSize: 12.5,
@@ -94,23 +187,23 @@ class QuotesCard {
                 ),
                 Text(
                   "Time: ${DateFormat.d().format(
-                        createdDate.toDate(),
+                        widget.createdDate.toDate(),
                       ) == DateFormat.d().format(
                         DateTime.now(),
                       ) ? "Today, " + DateFormat.jm().format(
-                        createdDate.toDate(),
+                        widget.createdDate.toDate(),
                       ) : DateFormat.y().format(
-                        createdDate.toDate(),
+                        widget.createdDate.toDate(),
                       ) == DateFormat.y().format(
                         DateTime.now(),
                       ) ? DateFormat.MMMd().format(
-                        createdDate.toDate(),
+                        widget.createdDate.toDate(),
                       ) + "," + " " + DateFormat.jm().format(
-                        createdDate.toDate(),
+                        widget.createdDate.toDate(),
                       ) : DateFormat.yMMMd().format(
-                        createdDate.toDate(),
+                        widget.createdDate.toDate(),
                       ) + "," + " " + DateFormat.jm().format(
-                        createdDate.toDate(),
+                        widget.createdDate.toDate(),
                       )}",
                   style: TextStyle(
                     fontFamily: "A Anti Corona",
@@ -123,12 +216,12 @@ class QuotesCard {
             ),
             QuoteDivider().quotesDivider(),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
                   onTap: () {
                     Share.share(
-                      """${quotes[index].data()['quote']}""",
+                      """$widget.quote""",
                     );
                   },
                   child: Row(
@@ -136,10 +229,11 @@ class QuotesCard {
                       Icon(
                         Icons.share,
                         color: Colors.white,
+                        size: 14,
                       ),
                       QuoteSizedBox().quotesSizedBox(
-                        5,
                         0,
+                        5,
                       ),
                       Text(
                         "Share",
@@ -153,15 +247,10 @@ class QuotesCard {
                     ],
                   ),
                 ),
-
-                QuoteSizedBox().quotesSizedBox(
-                  0,
-                  MediaQuery.of(context).size.width * 0.3,
-                ),
                 InkWell(
                   onTap: () {
                     FlutterClipboard.copy(
-                      quotes[index].data()["quote"],
+                      widget.quote!,
                     );
 
                     showToast(
@@ -173,6 +262,7 @@ class QuotesCard {
                       Icon(
                         Icons.copy,
                         color: Colors.white,
+                        size: 14,
                       ),
                       QuoteSizedBox().quotesSizedBox(
                         0,
@@ -190,24 +280,42 @@ class QuotesCard {
                     ],
                   ),
                 ),
+                InkWell(
+                  onTap: () async {
+                    final translator = GoogleTranslator();
 
-                // Spacer(),
-                // Icon(
-                //   Icons.favorite_border,
-                //   color: Colors.white,
-                // ),
-                // SizedBox(
-                //   width: 5,
-                // ),
-                // Text(
-                //   "Favorite",
-                //   style: TextStyle(
-                //     fontFamily: "Ubuntu",
-                //     fontSize: 14,
-                //     color: Colors.white,
-                //     // fontWeight: FontWeight.bold,
-                //   ),
-                // ),
+                    Translation? translation = await translator.translate(
+                      widget.quote!,
+                      to: widget.language == 'English' ? 'ur' : 'en',
+                    );
+
+                    print(translation);
+
+                    _showMyDialog(translation);
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.translate,
+                        color: Colors.white,
+                        size: 14,
+                      ),
+                      QuoteSizedBox().quotesSizedBox(
+                        0,
+                        5,
+                      ),
+                      Text(
+                        "Translate",
+                        style: TextStyle(
+                          fontFamily: "Ubuntu",
+                          fontSize: 14,
+                          color: Colors.white,
+                          // fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ],

@@ -9,10 +9,7 @@ class QuoteSizedBox {
     );
   }
 
-  SizedBox quotesSizedBox(
-      double height,
-      double width
-      ) {
+  SizedBox quotesSizedBox(double height, double width) {
     return SizedBox(
       height: height,
       width: width,
@@ -20,11 +17,10 @@ class QuoteSizedBox {
   }
 
   SizedBox addQuoteSizedBox(
-      double height,
-      ) {
+    double height,
+  ) {
     return SizedBox(
       height: height,
     );
   }
-
 }
