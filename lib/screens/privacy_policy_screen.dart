@@ -29,10 +29,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
       appBar: QuotesAppBar().appBar(
         "Privacy Policy",
         true,
-        FlatButton(
-          onPressed: null,
-          child: null,
-        ),
       ),
       body: Container(
         padding: EdgeInsets.all(
@@ -94,10 +90,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
               _buildSizedBox(),
               InkWell(
                 onTap: () async {
-                  var url =
-                      "https://support.google.com/admob/answer/6128543?hl=en";
-                  if (await canLaunch(url)) {
-                    await launch(
+                  Uri url = Uri.parse(
+                      "https://support.google.com/admob/answer/6128543?hl=en");
+                  if (await canLaunchUrl(url)) {
+                    await launchUrl(
                       url,
                     );
                   } else {
@@ -117,9 +113,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
               _buildSizedBox(),
               InkWell(
                 onTap: () async {
-                  var url = "https://firebase.google.com/policies/analytics";
-                  if (await canLaunch(url)) {
-                    await launch(
+                  Uri url = Uri.parse(
+                      "https://firebase.google.com/policies/analytics");
+                  if (await canLaunchUrl(url)) {
+                    await launchUrl(
                       url,
                     );
                   } else {

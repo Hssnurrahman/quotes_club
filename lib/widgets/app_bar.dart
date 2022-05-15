@@ -1,13 +1,12 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class QuotesAppBar {
   AppBar appBar(
     String title,
     bool autoImplyLoading,
-      FlatButton flatButton,
   ) {
     return AppBar(
+      backgroundColor: Colors.teal,
       automaticallyImplyLeading: autoImplyLoading,
       title: Text(
         title,
@@ -16,7 +15,6 @@ class QuotesAppBar {
           fontFamily: "Sansita Swashed Regular",
         ),
       ),
-      actions: [flatButton],
     );
   }
 }

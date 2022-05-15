@@ -1,24 +1,15 @@
-
-import 'package:firebase_admob/firebase_admob.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:quotes_app/screens/feedback_screen.dart';
-import 'package:quotes_app/screens/privacy_policy_screen.dart';
-import 'package:quotes_app/screens/profile_screen.dart';
-import 'package:quotes_app/screens/user_guide_screen.dart';
 import 'package:quotes_app/screens/welcome_screen.dart';
+import 'package:quotes_app/widgets/routes.dart';
 
 import 'models/quotes.dart';
-import 'screens/contact_us_screen.dart';
-import 'screens/settings_screen.dart';
 import 'screens/tabs_screen.dart';
-import 'screens/whats_new_screen.dart';
-import 'theme/app_state_notifier.dart';
-import 'theme/app_theme.dart';
+// import 'theme/app_state_notifier.dart';
+// import 'theme/app_theme.dart';
 
 // const String testDevice = "Mobile_id";
 
@@ -36,43 +27,37 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  // InterstitialAd _interstitialAd;
 
+  // InterstitialAd _createInterstitialAd() {
+  //   return InterstitialAd(
+  //       adUnitId: "ca-app-pub-2589764057313070/6802613276",
+  //       listener: (MobileAdEvent mobileAdEvent) {
+  //         print(
+  //           "Interstitial Ad $mobileAdEvent",
+  //         );
+  //       });
+  // }
 
+  // @override
+  // void initState() {
+  //   super.initState();
 
+  //   FirebaseAdMob.instance.initialize(
+  //     appId: "ca-app-pub-2589764057313070~7515276756",
+  //   );
 
-  InterstitialAd _interstitialAd;
+  //   _interstitialAd = _createInterstitialAd()
+  //     ..load()
+  //     ..show();
+  // }
 
-  InterstitialAd _createInterstitialAd() {
-    return InterstitialAd(
-        adUnitId: "ca-app-pub-2589764057313070/6802613276",
-        listener: (MobileAdEvent mobileAdEvent) {
-          print(
-            "Interstitial Ad $mobileAdEvent",
-          );
-        });
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    FirebaseAdMob.instance.initialize(
-      appId: "ca-app-pub-2589764057313070~7515276756",
-    );
-
-    _interstitialAd = _createInterstitialAd()
-      ..load()
-      ..show();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-
-    _interstitialAd.dispose();
-  }
+  //   _interstitialAd.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -97,37 +82,28 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider.value(
             value: Quotes(),
           ),
-          ChangeNotifierProvider.value(
-            value: AppStateNotifier(),
-          ),
+          // ChangeNotifierProvider.value(
+          //   value: AppStateNotifier(),
+          // ),
         ],
-        child: Consumer<AppStateNotifier>(
-          builder: (context, appState, _) => MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            themeMode: appState.isDarkModeOn ? ThemeMode.dark : ThemeMode.light,
-            home: StreamBuilder(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (context, userSnapshot) {
-                if (userSnapshot.hasData) {
-                  return TabsScreen();
-                }
-                return WelcomeScreen();
-              },
-            ),
-            routes: {
-              TabsScreen.routeName: (ctx) => TabsScreen(),
-              WelcomeScreen.routeName: (ctx) => WelcomeScreen(),
-              UserGuideScreen.routeName: (ctx) => UserGuideScreen(),
-              SettingsScreen.routeName: (ctx) => SettingsScreen(),
-              ContactUsScreen.routeName: (ctx) => ContactUsScreen(),
-              WhatsNewScreen.routeName: (ctx) => WhatsNewScreen(),
-              ProfileScreen.routeName: (ctx) => ProfileScreen(),
-              FeedbackScreen.routeName: (ctx) => FeedbackScreen(),
-              PrivacyPolicyScreen.routeName: (ctx) => PrivacyPolicyScreen(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primarySwatch: Colors.teal,
+          ),
+          // theme: AppTheme.lightTheme,
+          // darkTheme: AppTheme.darkTheme,
+          // themeMode: appState.isDarkModeOn ? ThemeMode.dark : ThemeMode.light,
+          home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, userSnapshot) {
+              if (userSnapshot.hasData) {
+                return TabsScreen();
+              }
+              return WelcomeScreen();
             },
           ),
+          routes: QuotesRoutes().quotesRoutes(),
         ),
       ),
     );

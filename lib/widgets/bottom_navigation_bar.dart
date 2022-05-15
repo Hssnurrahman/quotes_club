@@ -1,27 +1,30 @@
-import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 
 class QuotesBottomNavigationBar {
   SnakeNavigationBar bottomNavigationBar(
     int selectedPageIndex,
-    Function animateToPage,
+    Function(int)? animateToPage,
   ) {
     return SnakeNavigationBar.color(
       behaviour: SnakeBarBehaviour.floating,
-      snakeShape: SnakeShape.indicator,
-      // shape: RoundedRectangleBorder(
-      //   borderRadius: BorderRadius.only(
-      //     topLeft: Radius.circular(
-      //       20,
-      //     ),
-      //   ),
-      // ),
+      snakeShape: SnakeShape.rectangle,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+          20,
+        ),
+      ),
+      padding: EdgeInsets.only(
+        // top: 15,
+        bottom: 15,
+        left: 15,
+        right: 15,
+      ),
 
       ///configuration for SnakeNavigationBar.color
       snakeViewColor: Colors.white,
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.black,
+      selectedItemColor: Colors.grey[800],
+      unselectedItemColor: Colors.grey[800],
 
       backgroundColor: Colors.teal,
 
@@ -70,12 +73,6 @@ class QuotesBottomNavigationBar {
           ),
           label: "Add Quote",
         ),
-        // BottomNavigationBarItem(
-        //   icon: Icon(
-        //     Icons.chat_bubble_rounded,
-        //   ),
-        //   label: "My Quotes",
-        // ),
         BottomNavigationBarItem(
           icon: Icon(
             Icons.person_pin,

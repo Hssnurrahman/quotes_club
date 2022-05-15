@@ -5,8 +5,8 @@ class QuoteTextField {
     String valueKey,
     String hintText,
     String text,
-      int minLines,
-      int maxLines,
+    int minLines,
+    int maxLines,
   ) {
     return TextFormField(
       style: TextStyle(
@@ -33,7 +33,7 @@ class QuoteTextField {
         ),
       ),
       onSaved: (quote) {
-        text = quote;
+        text = quote!;
       },
     );
   }

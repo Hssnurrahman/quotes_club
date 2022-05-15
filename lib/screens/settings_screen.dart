@@ -1,22 +1,20 @@
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:quotes_app/screens/feedback_screen.dart';
+import 'package:quotes_app/screens/user_guide_screen.dart';
 import 'package:quotes_app/screens/welcome_screen.dart';
 import 'package:quotes_app/widgets/app_bar.dart';
 import 'package:quotes_app/widgets/divider.dart';
 import 'package:quotes_app/widgets/list_tile.dart';
 import 'package:quotes_app/widgets/sized_box.dart';
-import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 
 import 'whats_new_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   static const routeName = "/settings-screen";
-
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
@@ -29,10 +27,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[300],
       appBar: QuotesAppBar().appBar(
         "Settings",
         true,
-        FlatButton(onPressed: null, child: null),
       ),
       body: Container(
         padding: EdgeInsets.all(
@@ -41,19 +39,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Text(
-                "You Are Logged In!",
-                style: TextStyle(
-                  fontSize: 19,
-                  fontFamily: "Ubuntu",
-                  color: Colors.black,
+              CircleAvatar(
+                backgroundImage: NetworkImage(
+                  (_userData?.photoURL).toString(),
                 ),
+                radius: 40,
+                backgroundColor: Colors.teal,
               ),
               SizedBox(
                 height: 10,
               ),
               Text(
-                "Name: ${_userData.displayName}",
+                "Name: ${_userData?.displayName}",
                 style: TextStyle(
                   fontSize: 17,
                   fontFamily: "Ubuntu",
@@ -64,9 +61,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 10,
               ),
               Text(
-                "Email: ${_userData.email}",
+                "Email: ${_userData?.email}",
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 17,
                   fontFamily: "Ubuntu",
                   color: Colors.black,
                 ),
@@ -77,7 +74,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               QuoteListTile().settingsListTileWithText(
                 Icons.phone_android,
                 "Version",
-                "1.0.1",
+                "1.0.2",
               ),
               QuoteDivider().settingsDivider(
                 context,
@@ -118,80 +115,68 @@ class _SettingsScreenState extends State<SettingsScreen> {
               QuoteDivider().settingsDivider(
                 context,
               ),
-              ListTile(
+              QuoteListTile().settingsListTileWithIcon(
+                () {
+                  Navigator.of(context).pushNamed(
+                    UserGuideScreen.routeName,
+                  );
+                },
+                Icons.book,
+                "User Guide",
+                Icons.arrow_forward_ios,
+                () {
+                  Navigator.of(context).pushNamed(
+                    UserGuideScreen.routeName,
+                  );
+                },
+              ),
+              QuoteDivider().settingsDivider(
+                context,
+              ),
+              QuoteListTile().settingsListTile(
+                icon: Icons.share,
+                titleText: "Share",
                 onTap: () {
                   Share.share(
                     "Read Daily Unlimited Awesome Quotes Through Quotes Club, Link Given Below:\n\nhttps://play.google.com/store/apps/details?id=com.hassan.quotes_club",
                   );
                 },
-                leading: Icon(
-                  Icons.share,
-                  color: Theme.of(context).iconTheme.color,
-                  size: 20,
-                ),
-                title: Text(
-                  "Share App",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontFamily: "Ubuntu",
-                  ),
-                ),
               ),
               QuoteDivider().settingsDivider(
                 context,
               ),
-              ListTile(
+              QuoteListTile().settingsListTile(
+                icon: Icons.star,
+                titleText: "Rate",
                 onTap: () async {
-                  var url =
-                      "https://play.google.com/store/apps/details?id=com.hassan.quotes_club";
-                  if (await canLaunch(url)) {
-                    await launch(
+                  Uri url = Uri.parse(
+                    "https://play.google.com/store/apps/details?id=com.hassan.quotes_club",
+                  );
+                  if (await canLaunchUrl(url)) {
+                    await launchUrl(
                       url,
                     );
                   } else {
                     throw "Could not Open Link";
                   }
                 },
-                leading: Icon(
-                  Icons.star_rate,
-                  color: Theme.of(context).iconTheme.color,
-                  size: 20,
-                ),
-                title: Text(
-                  "Rate App",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontFamily: "Ubuntu",
-                  ),
-                ),
               ),
               QuoteDivider().settingsDivider(
                 context,
               ),
-              ListTile(
+              QuoteListTile().settingsListTile(
+                icon: Icons.exit_to_app,
+                titleText: "Logout",
                 onTap: () async {
                   await _googleSignIn.signOut();
                   await FirebaseAuth.instance.signOut();
 
-                  Navigator.of(context).pushReplacementNamed(
-                    WelcomeScreen.routeName,
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => WelcomeScreen(),
+                    ),
                   );
                 },
-                leading: Icon(
-                  Icons.exit_to_app,
-                  color: Theme.of(context).iconTheme.color,
-                  size: 20,
-                ),
-                title: Text(
-                  "Log Out",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontFamily: "Ubuntu",
-                  ),
-                ),
               ),
             ],
           ),

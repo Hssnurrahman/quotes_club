@@ -635,7 +635,8 @@ class Quotes with ChangeNotifier {
     ),
     Quote(
       addedBy: "Hassan Ur Rahman",
-      quote: "Every one wants happiness. No one wants pain. But you can't have a rainbow, without little rain.",
+      quote:
+          "Every one wants happiness. No one wants pain. But you can't have a rainbow, without little rain.",
       authorName: "Unknown",
       date: DateTime.now().toString(),
       time: DateTime.now().toString(),
@@ -646,7 +647,8 @@ class Quotes with ChangeNotifier {
     ),
     Quote(
       addedBy: "Hassan Ur Rahman",
-      quote: "Every night before you go to bed you should ask yourself, 'Am I better than I was yesterday?'",
+      quote:
+          "Every night before you go to bed you should ask yourself, 'Am I better than I was yesterday?'",
       authorName: "Unknown",
       date: DateTime.now().toString(),
       time: DateTime.now().toString(),
@@ -657,7 +659,8 @@ class Quotes with ChangeNotifier {
     ),
     Quote(
       addedBy: "Hassan Ur Rahman",
-      quote: "The past is behind, learn from it. The future is ahead, prepare for it. The present id here, live it.",
+      quote:
+          "The past is behind, learn from it. The future is ahead, prepare for it. The present id here, live it.",
       authorName: "Unknown",
       date: DateTime.now().toString(),
       time: DateTime.now().toString(),
@@ -668,7 +671,8 @@ class Quotes with ChangeNotifier {
     ),
     Quote(
       addedBy: "Hassan Ur Rahman",
-      quote: "Take every chance you get in life, because some things only happen once.",
+      quote:
+          "Take every chance you get in life, because some things only happen once.",
       authorName: "Unknown",
       date: DateTime.now().toString(),
       time: DateTime.now().toString(),
@@ -705,7 +709,7 @@ class Quotes with ChangeNotifier {
           style: Theme.of(context).dialogTheme.contentTextStyle,
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text(
               "No",
               style: Theme.of(context).dialogTheme.contentTextStyle,
@@ -714,7 +718,7 @@ class Quotes with ChangeNotifier {
               Navigator.of(ctx).pop();
             },
           ),
-          FlatButton(
+          TextButton(
             child: Text(
               "Yes",
               style: Theme.of(context).dialogTheme.contentTextStyle,

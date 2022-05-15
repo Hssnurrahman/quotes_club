@@ -3,9 +3,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ContactUs extends StatelessWidget {
   void sendEmail() async {
-    var url = "mailto:quotesclub02@gmail.com";
-    if (await canLaunch(url)) {
-      await launch(
+    Uri url = Uri.parse("mailto:quotesclub02@gmail.com");
+    if (await canLaunchUrl(url)) {
+      await launchUrl(
         url,
       );
     } else {

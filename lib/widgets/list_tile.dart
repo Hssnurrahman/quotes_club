@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class QuoteListTile {
   ListTile settingsListTileWithRichTextIcon(
-    Function onTap,
+    Function()? onTap,
     IconData icon,
     String titleText,
     IconData iconData,
-    Function onPressed,
+    Function()? onPressed,
   ) {
     return ListTile(
       onTap: onTap,
@@ -35,6 +35,7 @@ class QuoteListTile {
                 child: Icon(
                   Icons.add_circle_outline,
                   color: Colors.black,
+                  size: 18,
                 ),
               ),
             )
@@ -53,11 +54,11 @@ class QuoteListTile {
   }
 
   ListTile settingsListTileWithIcon(
-    Function onTap,
+    Function()? onTap,
     IconData icon,
     String titleText,
     IconData iconData,
-    Function onPressed,
+    Function()? onPressed,
   ) {
     return ListTile(
       onTap: onTap,
@@ -118,7 +119,6 @@ class QuoteListTile {
     String leadingText,
     String titleText,
     String subtitleText,
-    // String trailingText,
   ) {
     return ListTile(
       leading: Text(
@@ -147,19 +147,32 @@ class QuoteListTile {
               fontFamily: "Ubuntu",
             ),
             textAlign: TextAlign.justify,
-            // overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
-      // trailing: Text(
-      //   trailingText,
-      //   style: TextStyle(
-      //     color: Colors.black,
-      //     fontSize: 15,
-      //     fontFamily: "Ubuntu",
-      //   ),
-      //   overflow: TextOverflow.ellipsis,
-      // ),
+    );
+  }
+
+  ListTile settingsListTile({
+    required IconData? icon,
+    required String? titleText,
+    required Function()? onTap,
+  }) {
+    return ListTile(
+      onTap: onTap,
+      leading: Icon(
+        icon,
+        size: 20,
+        color: Colors.teal,
+      ),
+      title: Text(
+        titleText!,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 15,
+          fontFamily: "Ubuntu",
+        ),
+      ),
     );
   }
 }

@@ -1,5 +1,3 @@
-import 'package:connectivity/connectivity.dart';
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:quotes_app/models/add_quote.dart';
 import 'package:quotes_app/screens/my_quotes_screen.dart';
@@ -15,15 +13,12 @@ enum differentData {
 
 class TabsScreen extends StatefulWidget {
   static const routeName = "/tabs-screen";
-
   @override
   _TabsScreenState createState() => _TabsScreenState();
 }
 
 class _TabsScreenState extends State<TabsScreen> {
   PageController _pageController = PageController();
-
-
 
   List<Widget> pages = [
     MainScreen(),
@@ -52,14 +47,6 @@ class _TabsScreenState extends State<TabsScreen> {
       ),
       curve: Curves.ease,
     );
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-
   }
 
   @override

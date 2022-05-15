@@ -9,10 +9,10 @@ class WhatsNewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[300],
       appBar: QuotesAppBar().appBar(
         "What's New",
         true,
-        FlatButton(onPressed: null, child: null),
       ),
       body: WhatsNew(),
     );

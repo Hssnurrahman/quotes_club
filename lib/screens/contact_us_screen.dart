@@ -11,7 +11,6 @@ class ContactUsScreen extends StatelessWidget {
       appBar: QuotesAppBar().appBar(
         "Contact Us",
         true,
-        FlatButton(onPressed: null, child: null),
       ),
       body: ContactUs(),
     );
