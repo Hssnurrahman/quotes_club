@@ -34,25 +34,22 @@ android {
             keyPassword 'QuotesClub02'
         }
     }
-    compileSdkVersion 32
-    buildToolsVersion '32.0.0'
+    compileSdk 33
+    buildToolsVersion '34.0.0'
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    lintOptions {
-        disable 'InvalidPackage'
-    }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.hassan.quotes_club"
         minSdkVersion 19
-        targetSdkVersion 32
+        targetSdkVersion 33
         multiDexEnabled true
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 5
+        versionName "1.0.5"
         signingConfig signingConfigs.release
     }
 
@@ -63,6 +60,10 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    namespace 'com.hassan.quotes_club'
+    lint {
+        disable 'InvalidPackage'
+    }
 }
 
 flutter {
@@ -70,7 +71,7 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     implementation platform('com.google.firebase:firebase-bom:30.0.1')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth'

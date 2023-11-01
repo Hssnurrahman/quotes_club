@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
-import 'package:paginate_firestore/paginate_firestore.dart';
-import 'package:paginate_firestore/widgets/bottom_loader.dart';
-import 'package:paginate_firestore/widgets/initial_loader.dart';
 import 'package:quotes_app/widgets/app_bar.dart';
 import 'package:quotes_app/widgets/quote_card.dart';
 
@@ -33,7 +31,8 @@ class _MyQuotesScreenState extends State<MyQuotesScreen> {
           scrollDirection: Axis.vertical,
           child: Column(
             children: <Widget>[
-              PaginateFirestore(
+              FirestorePagination(
+                limit: itemsPerPage,
                 onEmpty: Text(
                   "No Quotes Found, Start By Adding One!",
                   style: TextStyle(
@@ -41,11 +40,15 @@ class _MyQuotesScreenState extends State<MyQuotesScreen> {
                     fontSize: 15,
                   ),
                 ),
-                initialLoader: InitialLoader(),
-                bottomLoader: BottomLoader(),
+                bottomLoader: const Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    color: Colors.blue,
+                  ),
+                ),
                 shrinkWrap: true,
                 physics: ClampingScrollPhysics(),
-                itemBuilderType: PaginateBuilderType.listView,
+                viewType: ViewType.list,
                 itemBuilder: (context, documentSnapshots, index) {
                   final data = documentSnapshots[index].data() as Map;
 
@@ -77,7 +80,6 @@ class _MyQuotesScreenState extends State<MyQuotesScreen> {
                       "creatorId",
                       isEqualTo: _userId,
                     ),
-                itemsPerPage: itemsPerPage,
               ),
             ],
           ),

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
-import 'package:paginate_firestore/paginate_firestore.dart';
-import 'package:paginate_firestore/widgets/bottom_loader.dart';
 import 'package:quotes_app/widgets/quote_card.dart';
 
 enum SelectOptions {
@@ -25,7 +24,8 @@ class _QuotesScreenState extends State<QuotesScreen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        PaginateFirestore(
+        FirestorePagination(
+          limit: itemsPerPage,
           onEmpty: Text(
             "No Quotes Found, Start By Adding One!",
             style: TextStyle(
@@ -33,10 +33,15 @@ class _QuotesScreenState extends State<QuotesScreen> {
               fontSize: 15,
             ),
           ),
-          bottomLoader: BottomLoader(),
+          bottomLoader: const Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 3,
+              color: Colors.blue,
+            ),
+          ),
           shrinkWrap: true,
           physics: ClampingScrollPhysics(),
-          itemBuilderType: PaginateBuilderType.listView,
+          viewType: ViewType.list,
           itemBuilder: (context, documentSnapshots, index) {
             final data = documentSnapshots[index].data() as Map;
 
@@ -65,7 +70,6 @@ class _QuotesScreenState extends State<QuotesScreen> {
                 descending: true,
               )
               .limit(itemsPerPage),
-          itemsPerPage: itemsPerPage,
         ),
       ],
     );

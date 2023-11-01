@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
-import 'package:paginate_firestore/paginate_firestore.dart';
-import 'package:paginate_firestore/widgets/bottom_loader.dart';
-import 'package:paginate_firestore/widgets/initial_loader.dart';
 import 'package:quotes_app/widgets/app_bar.dart';
 import 'package:quotes_app/widgets/quote_card.dart';
 
@@ -18,7 +16,7 @@ class CreatorQuotesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int itemsPerPage = 10;
+    int limit = 10;
 
     return Scaffold(
       appBar: QuotesAppBar().appBar(
@@ -34,7 +32,8 @@ class CreatorQuotesScreen extends StatelessWidget {
           scrollDirection: Axis.vertical,
           child: Column(
             children: <Widget>[
-              PaginateFirestore(
+              FirestorePagination(
+                limit: limit,
                 onEmpty: Text(
                   "No Quotes Found, Start By Adding One!",
                   style: TextStyle(
@@ -42,11 +41,16 @@ class CreatorQuotesScreen extends StatelessWidget {
                     fontSize: 15,
                   ),
                 ),
-                initialLoader: InitialLoader(),
-                bottomLoader: BottomLoader(),
+                // initialLoader: InitialLoader(),
+                bottomLoader: const Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    color: Colors.teal,
+                  ),
+                ),
                 shrinkWrap: true,
                 physics: ClampingScrollPhysics(),
-                itemBuilderType: PaginateBuilderType.listView,
+                viewType: ViewType.list,
                 itemBuilder: (context, documentSnapshots, index) {
                   final data = documentSnapshots[index].data() as Map;
 
@@ -78,7 +82,6 @@ class CreatorQuotesScreen extends StatelessWidget {
                       "creatorName",
                       isEqualTo: creatorName,
                     ),
-                itemsPerPage: itemsPerPage,
               ),
             ],
           ),
